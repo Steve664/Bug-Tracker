@@ -5,6 +5,7 @@ import com.bugtracker.dto.BugResponseDto;
 import com.bugtracker.dto.BugUpdateRequestDto;
 import com.bugtracker.model.Bug;
 import com.bugtracker.service.BugService;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class BugController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<BugResponseDto> createBug(@RequestBody BugCreateRequestDto request) {
+    public ResponseEntity<BugResponseDto> createBug(@Valid @RequestBody BugCreateRequestDto request) {
         Bug createdBug = bugService.createBug(
             request.getTitle(),
             request.getDescription(),
@@ -60,7 +61,7 @@ public class BugController {
     @PutMapping("/{id}/status")
     public ResponseEntity<BugResponseDto> updateBugStatus(
         @PathVariable Long id,
-        @RequestBody BugUpdateRequestDto request
+        @Valid @RequestBody BugUpdateRequestDto request
     ) {
         Bug updatedBug = bugService.updateBugStatus(id, request.getStatus());
         return ResponseEntity.status(HttpStatus.OK).body(toResponseDto(updatedBug));
